@@ -2,8 +2,8 @@ import numpy as np
 
 class logistic_reg():
     
-    def predict(self,X_train):
-        z = np.dot(X_train,self.weights) + self.bias
+    def predict(self,X):
+        z = np.dot(X,self.weights) + self.bias
         return 1/(1+np.exp(-z))
     
     def loss(self, y_train, y_pred):
@@ -16,7 +16,7 @@ class logistic_reg():
     def accuracy(self, y_pred, y_train):
         return np.mean(y_pred == y_train)
 
-    def fit(self,X_train, y_train, max_iter = 100, learning_rate = 1e-5):
+    def fit(self,X_train, y_train, max_iter = 100, learning_rate = 1e-10):
         
         if X_train.shape[0] != y_train.shape[0]:
             return print(f"Training examples are not same")
@@ -31,7 +31,9 @@ class logistic_reg():
             y_pred = self.predict(X_train)
             loss_reg = self.loss(y_train, y_pred)
             self.loss_history.append(loss_reg)
-            grad_weights = np.dot(X_train.T, y_pred - y_train)/self.examples
-            grad_bias = np.sum(y_pred - y_train)/self.examples
+            grad_loss = - (y_train/y_pred)-((1-y_train)/(1-y_pred))
+            grad_pred = np.multiply(y_pred,1-y_pred)
+            grad_weights = np.matmul(X_train.T,np.multiply(grad_loss,grad_pred))
+            grad_bias = np.sum(np.multiply(grad_loss,grad_pred))
             self.weights -= learning_rate*grad_weights
             self.bias -= learning_rate*grad_bias
