@@ -3,7 +3,7 @@ import numpy as np
 class logistic_reg():
     
     def predict(self,X):
-        z = np.dot(X,self.weights) + self.bias
+        z = np.matmul(X,self.weights) + self.bias
         return 1/(1+np.exp(-z))
     
     def loss(self, y_train, y_pred):
@@ -16,15 +16,17 @@ class logistic_reg():
     def accuracy(self, y_pred, y_train):
         return np.mean(y_pred == y_train)
 
-    def fit(self,X_train, y_train, max_iter = 100, learning_rate = 1e-10):
+    def fit(self,X_train, y_train, max_iter = 100, learning_rate = 1e-8):
         
         if X_train.shape[0] != y_train.shape[0]:
             return print(f"Training examples are not same")
         
         self.examples = X_train.shape[0]
         self.features = X_train.shape[1]
-        self.weights = np.zeros(shape= (self.features,1))
-        self.bias = 0.0
+        #self.weights = np.zeros(shape= (self.features,1))
+        #self.bias = 0.0
+        self.weights = np.random.normal(size = (self.features,1))
+        self.bias = np.random.normal()
         self.loss_history = list()
         
         for i in range(max_iter):  
