@@ -6,4 +6,4 @@ Implementation from scratch of the following algorithms using numpy.
 2. Logistic Regression
 3. Prinicipal Component Analysis (PCA)
 4. K-Means Clustering
-5.
+5. Softmax Regression
